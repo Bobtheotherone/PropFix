@@ -1,20 +1,16 @@
 {
   "name": "propfix",
-  "version": "0.1.0",
-  "description": "AI‑assisted photo editing application using Electron and Python back‑end.",
-  "main": "src/main.js",
+  "version": "0.2.0",
+  "private": true,
+  "main": "src/main.cjs",
+  "description": "PropFix – Electron UI (sliders) talking to the local PropFix server",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"No JavaScript tests yet. See python/tests for Python tests.\""
-  },
-  "author": "RadEngineer",
-  "license": "MIT",
-  "dependencies": {
-    "electron": "^28.0.0",
-    "python-shell": "5.0.0"
+    "start": "electron ."
   },
   "devDependencies": {
-    "eslint": "^8.55.0",
-    "prettier": "^3.0.0"
+    "electron": "^31.3.0"
+  },
+  "dependencies": {
+    "python-shell": "5.0.0"
   }
 }

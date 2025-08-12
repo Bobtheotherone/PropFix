@@ -1,0 +1,5 @@
+flask
+mediapipe==0.10.14
+opencv-python==4.12.0.88
+numpy>=2.0.0
+PyYAML>=6.0.0

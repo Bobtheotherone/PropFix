@@ -158,5 +158,6 @@ PropFix builds upon the efforts of many open‑source communities.  In particula
 * The **Skcript tutorial** on executing Python scripts in Electron showed how to bridge Node and Python using the `python‑shell` package【362342226299824†L53-L63】.  The example code and description of inter‑process communication informed our own architecture【362342226299824†L100-L136】.
 * The maintainers of the [Python.gitignore](https://github.com/github/gitignore/blob/master/Python.gitignore) and [Node.gitignore](https://github.com/github/gitignore/blob/master/Node.gitignore) templates provided patterns that protect sensitive files and unnecessary build artefacts【35231548267374†L0-L24】【925898819000351†L0-L42】.
 
-This repository is an ongoing project—feel free to fork it, explore the code, and contribute improvements![ ! [ C I ] ( . . . ) ] ( & )  
+This repository is an ongoing project—feel free to fork it, explore the code, and contribute improvements![ ! [ C I ] ( . . . ) ] ( & ) 
+ 
  
