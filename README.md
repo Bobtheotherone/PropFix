@@ -1,3 +1,5 @@
+![PropFix Banner](banner.png)
+
 # PropFix: AI‑Assisted Photo Editing Electron Application
 
 PropFix is a cross‑platform desktop application that uses a modern Electron/Node.js user interface and Python‑powered machine‑learning back‑end to deliver intelligent photo editing tools.  The project’s goal is to demonstrate how computer systems engineering, data science, and modern software architecture can be combined in a portable product‑grade application.  As a **passion project**, the repository has been organised with an emphasis on reproducibility, documentation, and careful version control so that it can serve as part of a professional portfolio.
