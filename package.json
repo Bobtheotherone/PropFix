@@ -2,7 +2,7 @@
   "name": "propfix",
   "version": "0.2.0",
   "private": true,
-  "main": "src/main.cjs",
+  "main": "src/main.js",
   "description": "PropFix – Electron UI (sliders) talking to the local PropFix server",
   "scripts": {
     "start": "electron ."

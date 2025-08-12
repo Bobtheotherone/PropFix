@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const state = {
     configPath: "configs/default.yaml",
     inputPath: "",
-    // segments: array of {id,label}
     segments: [],
     controls: { geometry: {}, photo: {} },
     strength: 1.0,
@@ -80,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyStrengthControls(){
-    // Produce a deep copy of controls with amount scaling applied
     const amt = state.strength;
     const geo = {};
     for(const [id, g] of Object.entries(state.controls.geometry)){
@@ -162,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
     buildGroups(state.segments);
   }
 
-  // --- Operations -----------------------------------------------------------
   const scheduleWarp = debounce(async ()=>{
     if(!state.inputPath) return;
     setStatus("Warping…");
@@ -194,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const outAbs = data.output || "";
       if(outAbs) els.previewImg.src = `${toFileURL(outAbs)}?ts=${Date.now()}`;
       state.segments = toSegmentsArray(data.segments || data.used_segments);
-      // reset controls when new image
       state.controls = { geometry:{}, photo:{} };
       buildUI();
       setStatus("Ready.");
@@ -204,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Wiring ---------------------------------------------------------------
   els.annotateBtn?.addEventListener("click", classify);
   els.resetBtn?.addEventListener("click", ()=>{ state.controls={ geometry:{}, photo:{} }; buildUI(); setStatus("Controls reset."); scheduleWarp(); });
   els.logsBtn?.addEventListener("click", ()=>{ els.logsPane.classList.toggle("hidden"); });
@@ -221,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
   els.fillBtn?.addEventListener("click", ()=> setZoom("fill"));
   els.oneBtn?.addEventListener("click", ()=> setZoom("one"));
 
-  // Initialize
   setZoom("fit");
   if(els.inputPath && els.inputPath.value.trim()){ state.inputPath=els.inputPath.value.trim(); els.previewImg.src=toFileURL(state.inputPath); }
   buildUI();
