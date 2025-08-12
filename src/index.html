@@ -1,104 +1,90 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PropFix – AI‑Assisted Photo Editor</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5;
-      }
-      header {
-        background-color: #243a73;
-        color: white;
-        padding: 1rem;
-        text-align: center;
-      }
-      #controls {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 1rem;
-      }
-      button {
-        padding: 0.5rem 1rem;
-        border: none;
-        background-color: #4c8ef5;
-        color: white;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      button:hover {
-        background-color: #3b6dc2;
-      }
-      #image-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-      }
-      #image-container img {
-        max-width: 90%;
-        max-height: 60vh;
-        border: 1px solid #ccc;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>PropFix</h1>
-      <p>AI‑assisted photo editing</p>
-    </header>
-    <div id="controls">
-      <button id="openBtn">Open Image</button>
-      <button id="enhanceBtn">Auto Enhance</button>
-      <button id="denoiseBtn">Denoise</button>
-      <button id="styleBtn">Style Transfer</button>
-    </div>
-    <div id="image-container">
-      <img id="preview" alt="Selected image will appear here" />
-    </div>
-    <script>
-      const openBtn = document.getElementById('openBtn');
-      const enhanceBtn = document.getElementById('enhanceBtn');
-      const denoiseBtn = document.getElementById('denoiseBtn');
-      const styleBtn = document.getElementById('styleBtn');
-      const preview = document.getElementById('preview');
+<head>
+  <meta charset="utf-8" />
+  <title>PropFix Photo Editor</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: file:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src http://127.0.0.1:5001;">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="left">
+      <header class="left-header">
+        <h1>Controls</h1>
+        <div id="segmentsBanner" class="muted">No segments yet.</div>
+      </header>
 
-      let currentImagePath = null;
+      <section class="panel">
+        <div class="row compact">
+          <label for="searchSeg">Find segment</label>
+          <input id="searchSeg" type="text" placeholder="Search (e.g., arm, torso)" />
+        </div>
+        <div class="row compact">
+          <label for="strength">Effect amount</label>
+          <input id="strength" type="range" min="0" max="1" step="0.05" value="1" />
+          <span id="strengthVal">100%</span>
+        </div>
+      </section>
 
-      openBtn.addEventListener('click', async () => {
-        const files = await window.electron.openFiles();
-        if (files && files.length > 0) {
-          currentImagePath = files[0];
-          preview.src = `file://${currentImagePath}`;
-        }
-      });
+      <section class="panel">
+        <details open>
+          <summary>Body</summary>
+          <div id="group-body" class="group"></div>
+        </details>
+        <details>
+          <summary>Arms</summary>
+          <div id="group-arms" class="group"></div>
+        </details>
+        <details>
+          <summary>Legs</summary>
+          <div id="group-legs" class="group"></div>
+        </details>
+        <details>
+          <summary>Hands & Feet</summary>
+          <div id="group-extremities" class="group"></div>
+        </details>
+        <details>
+          <summary>Other</summary>
+          <div id="group-other" class="group"></div>
+        </details>
+      </section>
 
-      async function runCommand(cmd) {
-        if (!currentImagePath) {
-          alert('Please open an image first.');
-          return;
-        }
-        const result = await window.electron.processImage({
-          command: cmd,
-          image_path: currentImagePath,
-          params: {}
-        });
-        // Expect result to be a file path or base64 string
-        if (result) {
-          preview.src = result.startsWith('data:')
-            ? result
-            : `file://${result}`;
-        }
-      }
+      <section class="panel footer-buttons">
+        <button id="resetBtn" class="btn ghost">Reset All</button>
+        <button id="logsBtn" class="btn ghost">Logs</button>
+      </section>
 
-      enhanceBtn.addEventListener('click', () => runCommand('enhance'));
-      denoiseBtn.addEventListener('click', () => runCommand('denoise'));
-      styleBtn.addEventListener('click', () => runCommand('style'));
-    </script>
-  </body>
+      <section id="logsPane" class="panel hidden">
+        <textarea id="logArea" readonly></textarea>
+      </section>
+    </aside>
+
+    <main class="right">
+      <header class="topbar">
+        <input id="inputPath" type="text" placeholder="Full path to input image (e.g., C:\path\to\alpha.png)" />
+        <div class="topbar-actions">
+          <button id="annotateBtn" class="btn primary">Annotate</button>
+          <div class="seg-count" id="segCount">–</div>
+          <div class="divider"></div>
+          <div class="zoom-controls">
+            <button class="btn ghost" id="fitBtn" title="Fit to window">Fit</button>
+            <button class="btn ghost" id="fillBtn" title="Fill width">Fill</button>
+            <button class="btn ghost" id="oneBtn" title="1:1">1:1</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="canvas">
+        <div id="viewport" class="viewport fit">
+          <img id="previewImg" alt="preview" />
+        </div>
+      </section>
+
+      <footer id="statusBar" class="status">Idle.</footer>
+    </main>
+  </div>
+
+  <script src="./renderer.js"></script>
+</body>
 </html>
