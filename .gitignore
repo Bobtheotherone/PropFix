@@ -1,0 +1,41 @@
+# Ignore compiled Python files and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build and distribution directories
+build/
+dist/
+*.egg-info/
+
+# Virtual environments and environment files
+.venv/
+env/
+venv/
+ENV/
+.env*
+
+# Testing and notebook caches
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Node/Electron dependencies and logs
+node_modules/
+logs
+*.log
+npm-debug.log*
+
+# Coverage and cache directories
+coverage/
+.cache/
+
+# Data and model artefacts
+models/
+data/
+results/
+output/
+
+# Temporary files
+*.tmp
+*.bak
+*~

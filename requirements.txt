@@ -1,0 +1,9 @@
+numpy
+opencv-python
+pillow
+tqdm
+scikit-image
+pytorch-lightning
+torch
+torchvision
+tensorflow

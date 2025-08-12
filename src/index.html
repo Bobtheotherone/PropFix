@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PropFix – AI‑Assisted Photo Editor</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      header {
+        background-color: #243a73;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+      }
+      #controls {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        border: none;
+        background-color: #4c8ef5;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #3b6dc2;
+      }
+      #image-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+      #image-container img {
+        max-width: 90%;
+        max-height: 60vh;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>PropFix</h1>
+      <p>AI‑assisted photo editing</p>
+    </header>
+    <div id="controls">
+      <button id="openBtn">Open Image</button>
+      <button id="enhanceBtn">Auto Enhance</button>
+      <button id="denoiseBtn">Denoise</button>
+      <button id="styleBtn">Style Transfer</button>
+    </div>
+    <div id="image-container">
+      <img id="preview" alt="Selected image will appear here" />
+    </div>
+    <script>
+      const openBtn = document.getElementById('openBtn');
+      const enhanceBtn = document.getElementById('enhanceBtn');
+      const denoiseBtn = document.getElementById('denoiseBtn');
+      const styleBtn = document.getElementById('styleBtn');
+      const preview = document.getElementById('preview');
+
+      let currentImagePath = null;
+
+      openBtn.addEventListener('click', async () => {
+        const files = await window.electron.openFiles();
+        if (files && files.length > 0) {
+          currentImagePath = files[0];
+          preview.src = `file://${currentImagePath}`;
+        }
+      });
+
+      async function runCommand(cmd) {
+        if (!currentImagePath) {
+          alert('Please open an image first.');
+          return;
+        }
+        const result = await window.electron.processImage({
+          command: cmd,
+          image_path: currentImagePath,
+          params: {}
+        });
+        // Expect result to be a file path or base64 string
+        if (result) {
+          preview.src = result.startsWith('data:')
+            ? result
+            : `file://${result}`;
+        }
+      }
+
+      enhanceBtn.addEventListener('click', () => runCommand('enhance'));
+      denoiseBtn.addEventListener('click', () => runCommand('denoise'));
+      styleBtn.addEventListener('click', () => runCommand('style'));
+    </script>
+  </body>
+</html>
