@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "electron": "^28.0.0",
-    "python-shell": "^5.0.1"
+    "python-shell": "5.0.0"
   },
   "devDependencies": {
     "eslint": "^8.55.0",
