@@ -1,4 +1,4 @@
-name: CI
+﻿name: CI
 on:
   push:
   pull_request:
@@ -6,17 +6,16 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install Node deps
         run: npm ci || npm install
@@ -27,10 +26,13 @@ jobs:
           pip install -r requirements.txt
 
       - name: Smoke test Python backend imports
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           python - <<'PY'
-import importlib
-for m in ['python.image_processing','python.model']:
+import importlib, sys
+print("PYTHONPATH OK, sys.path[0] =", sys.path[0])
+for m in ("python.image_processing", "python.model"):
     importlib.import_module(m)
 print("Python backend imports OK")
 PY
